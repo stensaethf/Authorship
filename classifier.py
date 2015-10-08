@@ -23,6 +23,8 @@ import re
 
 def tokenizer(sentence):
 	"""
+	WORKS
+
 	tokenizer() takes a sentence (string) and tokenizes it according to the
 	algorithm for tokenization provided by Jurafsky and Martin in
 	'Speech and Language Processing' (2nd) on page 71.
@@ -82,37 +84,69 @@ def tokenizer(sentence):
 
 def trainModel():
 	"""
+	NOT WORKING
 	"""
 	return None
 
 def developModel():
 	"""
+	NOT WORKING
 	"""
 	author_train_test = createTrainingAndTest(f)
 
 	for author in author_train_test:
-		Xx
+		for test_sent in author[2]:
+			prob = probOfSentence(test_sent, author[1])
+			print(test_sent + ': ' + str(prob))
 
 	return None
 
 def testModel(f):
 	"""
+	NOT WORKING
 	"""
 	return None
 
 def probOfSentence(sentence, model):
 	"""
+	NOT WORKING
 	"""
-	sent_list = sentence.split(' ')
+	prob = 1
 
+	sent_list = sentence.split(' ')
 	for index in range(1, len(sent_list)):
 		first = sent_list[index - 1]
 		second = sent_list[index]
 
-	return None
+		smooth_count = goodTuringSmoothing(model, first, second)
+
+		bigram_prob = Xx
+
+		prob *= bigram_prob
+
+
+	return prob
+
+def createTraining(f):
+	"""
+	NOT WORKING
+	"""
+	authors = openAuthorlist(f)
+
+	authors_content = []
+	for author in authors:
+		# author[1] --> url.
+		lines_content = openUrlAndClean(author[1])
+
+		train_model = makeLanguageModel(lines_content)
+
+		authors_content.append([author[0], train_model])
+
+	return authors_content
 
 def createTrainingAndTest(f):
 	"""
+	NOT WORKING
 	"""
 	authors = openAuthorlist(f)
 
@@ -132,6 +166,8 @@ def createTrainingAndTest(f):
 
 def goodTuringSmoothing(table, w_i, w_i_1):
 	"""
+	WORKS
+
 	smoothener() takes a table of n-gram counts and smooths them using the
 	Good-Turing approach to smoothing. Returns the smooth counts.
 
@@ -156,29 +192,31 @@ def goodTuringSmoothing(table, w_i, w_i_1):
 
 	if index_w_i == None:
 		# IT DOESNT EXIST
+		# <XX> What to do?
 		y = 1
 
 	if index_w_i_1 == None:
 		# IT DOESNT EXIST
+		# <XX> What to do?
 		y = 1
 
 	bigram_count = table[index_w_i][index_w_i_1]
 	if bigram_count < 5:
-		# WHAT DO YOU DO IF EITHER ARE 0??????!!!!!!! <XX>
+		# WHAT DO YOU DO IF n_y_1 is 0??????!!!!!!! <XX>
+		# n_y cannot be 0, as we have at least this bigram.
 		n_y = bigram_frequencies[bigram_count]
 		n_y_1 = bigram_frequencies[bigram_count + 1]
-		## good_turing_table[row].append((count + 1) * (n_y_1 / n_y))
 
 		smooth = (bigram_count + 1) * (n_y_1 / n_y)
 	else:
-		## good_turing_table[row].append(count)
-
 		smooth = bigram_count
 
 	return smooth
 
 def makeLanguageModel(lines):
 	"""
+	WORKS
+
 	makeLanguageModel() Xx
 
 	@params: Xx
@@ -247,6 +285,8 @@ def makeLanguageModel(lines):
 
 def openUrlAndClean(url):
 	"""
+	WORKS
+
 	openUrlAndClean() takes a url and opens/ reads it. The content of the url
 	is cleaned before indivudal sentences are made into a list. This list is
 	returned.
@@ -291,6 +331,8 @@ def openUrlAndClean(url):
 
 def openAuthorlist(f):
 	"""
+	WORKS
+
 	openAuthors() takes a filename and reads the content of the file. The file
 	needs to be formated <Name of author> <Url> \n <Name of author> <Url>.
 	Returns a list of tuples: (<Name of author> <Url>).
@@ -310,6 +352,8 @@ def openAuthorlist(f):
 
 def errorMessage():
 	"""
+	WORKS
+
 	errorMessage() tells the user that an error has occured. Prints out a
 	usage message to the user before exiting the system.
 
