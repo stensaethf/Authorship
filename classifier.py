@@ -80,60 +80,52 @@ def tokenizer(sentence):
 
 	return tokenized_sent
 
-def goodTuringSmoothing(table):
+def goodTuringSmoothing(table, w_i, w_i_1):
 	"""
-	smoothener() Xx
+	smoothener() takes a table of n-gram counts and smooths them using the
+	Good-Turing approach to smoothing. Returns the smooth counts.
 
-	@params: Xx
-	@return: Xx
+	@params: Table of raw counts, two words in a bigram.
+	@return: Smooth counts for both bigram words.
 	"""
 	# Loops over the entire table to record the frequencies of bigrams.
 	bigram_frequencies = [0 for i in range(7)]
-	for row in table[1:]:
-		for column in row[1:]:
-			if table[row][column] < 7:
-				bigram_frequencies[table[row][column]] += 1
-
-	# # Creates new table where we will store the Good-Turing post-smoothing
-	# # counts.
-	# good_turing_table = [[None for i in range(len(table))] for j in range(len(table[0]))]
-	# good_turing_table[0] = table[0]
-	# for row in range(1, len(table)):
-	# 	new_row = [None for i in range(len(row))]
-	# 	new_row[0] = row[0]
-	# 	good_turing_table.append(new_row)
-
-	# CAN COMBINE THESE TWO BLOCK!!!!!
-	# MAKE THE NEW TABLE AS WE GO ON.
-	# ADD THE SMOOTHING COUNT WHILE MAKING THE TABLE.
-	good_turing_table = []
-	for row in range(0, len(table)):
-		good_turing_table.append([table[row][0]])
+	for row in range(1, len(table)):
 		for column in range(1, len(table[row])):
 			count = table[row][column]
-			if count < 5:
-				# WHAT DO YOU DO IF EITHER ARE 0??????!!!!!!! <XX>
-				n_y = bigram_frequencies[count]
-				n_y_1 = bigram_frequencies[count + 1]
-				good_turing_table[row].append((count + 1) * (n_y_1 / n_y))
-			else:
-				good_turing_table[row].append(count)
+			if count < 7:
+				bigram_frequencies[count] += 1
 
+	index_w_i = None
+	if w_i in table[0]:
+		index_w_i = table[0].index(w_i)
 
+	index_w_i_1 = None
+	if w_i_1 in table[0]:
+		index_w_i_1 = table[0].index(w_i_1)
 
-	# # Calculates the Good-Turing smoothing counts.
-	# for row in range(1, len(table)):
-	# 	for column in range(1, len(table[row])):
-	# 		count = table[row][column]
-	# 		if count < 5:
-	# 			# WHAT DO YOU DO IT EITHER ARE 0??????!!!!!!! <XX>
-	# 			n_y = bigram_frequencies[count]
-	# 			n_y_1 = bigram_frequencies[count + 1]
-	# 			good_turing_table[row][column] = (count + 1) * (n_y_1 / n_y)
-	# 		else:
-	# 			good_turing_table[row][column] = count
+	if index_w_i == None:
+		# IT DOESNT EXIST
+		y = 1
 
-	return good_turing_table
+	if index_w_i_1 == None:
+		# IT DOESNT EXIST
+		y = 1
+
+	bigram_count = table[index_w_i][index_w_i_1]
+	if bigram_count < 5:
+		# WHAT DO YOU DO IF EITHER ARE 0??????!!!!!!! <XX>
+		n_y = bigram_frequencies[bigram_count]
+		n_y_1 = bigram_frequencies[bigram_count + 1]
+		## good_turing_table[row].append((count + 1) * (n_y_1 / n_y))
+
+		smooth = (bigram_count + 1) * (n_y_1 / n_y)
+	else:
+		## good_turing_table[row].append(count)
+
+		smooth = bigram_count
+
+	return smooth
 
 def makeLanguageModel(lines):
 	"""
@@ -163,9 +155,9 @@ def makeLanguageModel(lines):
 				if first != None:
 					index_first = bigram_table[0].index(first)
 					bigram_table[index_first][index_second] += 1
-					if bigram_table[index_first][index_second] > 15:
-						print(bigram_table[index_first])
-						print(bigram_table[0][4])
+					# if bigram_table[index_first][index_second] > 15:
+						# print(bigram_table[index_first])
+						# print(bigram_table[0][4])
 
 				# CODE
 
@@ -194,8 +186,8 @@ def makeLanguageModel(lines):
 				if first != None:
 					index_first = bigram_table[0].index(first)
 					bigram_table[index_first][index_second] += 1
-					if bigram_table[index_first][index_second] > 15:
-						print(bigram_table[index_first])
+					# if bigram_table[index_first][index_second] > 15:
+					# 	print(bigram_table[index_first])
 
 				# CODE
 
@@ -310,7 +302,7 @@ def main():
 	# 	errorMessage()
 
 	content = str(urllib.request.urlopen('http://www.cs.carleton.edu/faculty/aexley/authors/austen.txt').read())
-	print(content)
+	# print(content)
 	content = re.sub('\n{2,}', '. ', content)
 	content = re.sub('\.{2,}', '.', content)
 	content = tokenizer(content)
@@ -320,8 +312,12 @@ def main():
 	lines_content = cleaned_content.split(' . ')
 	print('entered')
 	table = makeLanguageModel(lines_content)
+	print('SMOOTHING!')
+	smooth = goodTuringSmoothing(table, 'a', 'a')
+	print(smooth)
 
-	print(table)
+	smooth = goodTuringSmoothing(table, 'astonishment', 'bordering')
+	print(smooth)
 
 
 
