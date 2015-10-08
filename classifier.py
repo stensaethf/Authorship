@@ -92,6 +92,8 @@ def developModel():
 	"""
 	NOT WORKING
 	"""
+	print('training... (this may take a while)')
+
 	author_train_test = createTrainingAndTest(f)
 
 	for author in author_train_test:
@@ -105,6 +107,8 @@ def testModel(f):
 	"""
 	NOT WORKING
 	"""
+	print('training... (this may take a while)')
+
 	return None
 
 def probOfSentence(sentence, model):
@@ -140,13 +144,14 @@ def createTraining(f):
 
 		train_model = makeLanguageModel(lines_content)
 
+		# author[0] --> name of author.
 		authors_content.append([author[0], train_model])
 
 	return authors_content
 
 def createTrainingAndTest(f):
 	"""
-	NOT WORKING
+	WORKS
 	"""
 	authors = openAuthorlist(f)
 
@@ -155,11 +160,13 @@ def createTrainingAndTest(f):
 		# author[1] --> url.
 		lines_content = openUrlAndClean(author[1])
 
-		train_model = makeLanguageModel(
-			lines_content[:int(len(lines_content) / 2)])
+		# Should change this from being 100 in later versions. <XX>.
+		train_set = lines_content[:-100]
+		train_model = makeLanguageModel(train_set)
 
-		test_set = lines_content[int(len(lines_content) / 2):]
+		test_set = lines_content[-100:]
 
+		# author[0] --> name of author.
 		authors_content.append([author[0], train_model, test_set])
 
 	return authors_content
