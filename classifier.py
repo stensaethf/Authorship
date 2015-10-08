@@ -80,6 +80,56 @@ def tokenizer(sentence):
 
 	return tokenized_sent
 
+def trainModel():
+	"""
+	"""
+	return None
+
+def developModel():
+	"""
+	"""
+	author_train_test = createTrainingAndTest(f)
+
+	for author in author_train_test:
+		Xx
+
+	return None
+
+def testModel(f):
+	"""
+	"""
+	return None
+
+def probOfSentence(sentence, model):
+	"""
+	"""
+	sent_list = sentence.split(' ')
+
+	for index in range(1, len(sent_list)):
+		first = sent_list[index - 1]
+		second = sent_list[index]
+
+	return None
+
+def createTrainingAndTest(f):
+	"""
+	"""
+	authors = openAuthorlist(f)
+
+	authors_content = []
+	for author in authors:
+		# author[1] --> url.
+		lines_content = openUrlAndClean(author[1])
+
+		train_model = makeLanguageModel(
+			lines_content[:int(len(lines_content) / 2)])
+
+		test_set = lines_content[int(len(lines_content) / 2):]
+
+		authors_content.append([author[0], train_model, test_set])
+
+	return authors_content
+
 def goodTuringSmoothing(table, w_i, w_i_1):
 	"""
 	smoothener() takes a table of n-gram counts and smooths them using the
@@ -226,18 +276,18 @@ def openUrlAndClean(url):
 
 	return lines_content
 
-def testStuff():
-	content = urllib.urlopen('http://www.cs.carleton.edu/faculty/aexley/authors/austen.txt').read()
-	content = re.sub('\n{2,}', '. ', content)
-	content = re.sub('\.{2,}', '.', content)
-	content = classifier.tokenizer(content)
-	cleaned_content = re.sub(' [^A-Za-z0-9.] ', ' ', content)
-	cleaned_content = re.sub('(^ )|( $)', '', cleaned_content)
-	cleaned_content = re.sub(' .$', '', cleaned_content)
-	lines_content = cleaned_content.split(' . ')
-	table = makeLanguageModel(lines_content)
+# def testStuff():
+# 	content = urllib.urlopen('http://www.cs.carleton.edu/faculty/aexley/authors/austen.txt').read()
+# 	content = re.sub('\n{2,}', '. ', content)
+# 	content = re.sub('\.{2,}', '.', content)
+# 	content = classifier.tokenizer(content)
+# 	cleaned_content = re.sub(' [^A-Za-z0-9.] ', ' ', content)
+# 	cleaned_content = re.sub('(^ )|( $)', '', cleaned_content)
+# 	cleaned_content = re.sub(' .$', '', cleaned_content)
+# 	lines_content = cleaned_content.split(' . ')
+# 	table = makeLanguageModel(lines_content)
 
-	print(table)
+# 	print(table)
 
 def openAuthorlist(f):
 	"""
