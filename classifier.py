@@ -94,18 +94,44 @@ def goodTuringSmoothing(table):
 			if table[row][column] < 7:
 				bigram_frequencies[table[row][column]] += 1
 
-	good_turing_table = [] # WHAT TO DO???!!! <XX>
+	# # Creates new table where we will store the Good-Turing post-smoothing
+	# # counts.
+	# good_turing_table = [[None for i in range(len(table))] for j in range(len(table[0]))]
+	# good_turing_table[0] = table[0]
+	# for row in range(1, len(table)):
+	# 	new_row = [None for i in range(len(row))]
+	# 	new_row[0] = row[0]
+	# 	good_turing_table.append(new_row)
 
-	for row in range(1, len(table)):
+	# CAN COMBINE THESE TWO BLOCK!!!!!
+	# MAKE THE NEW TABLE AS WE GO ON.
+	# ADD THE SMOOTHING COUNT WHILE MAKING THE TABLE.
+	good_turing_table = []
+	for row in range(0, len(table)):
+		good_turing_table.append([table[row][0]])
 		for column in range(1, len(table[row])):
 			count = table[row][column]
 			if count < 5:
-				# WHAT DO YOU DO IT EITHER ARE 0??????!!!!!!! <XX>
+				# WHAT DO YOU DO IF EITHER ARE 0??????!!!!!!! <XX>
 				n_y = bigram_frequencies[count]
 				n_y_1 = bigram_frequencies[count + 1]
-				good_turing_table[row][column] = (count + 1) * (n_y_1 / n_y)
+				good_turing_table[row].append((count + 1) * (n_y_1 / n_y))
 			else:
-				good_turing_table[row][column] = count
+				good_turing_table[row].append(count)
+
+
+
+	# # Calculates the Good-Turing smoothing counts.
+	# for row in range(1, len(table)):
+	# 	for column in range(1, len(table[row])):
+	# 		count = table[row][column]
+	# 		if count < 5:
+	# 			# WHAT DO YOU DO IT EITHER ARE 0??????!!!!!!! <XX>
+	# 			n_y = bigram_frequencies[count]
+	# 			n_y_1 = bigram_frequencies[count + 1]
+	# 			good_turing_table[row][column] = (count + 1) * (n_y_1 / n_y)
+	# 		else:
+	# 			good_turing_table[row][column] = count
 
 	return good_turing_table
 
