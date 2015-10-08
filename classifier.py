@@ -11,6 +11,10 @@ Tokenization:
   1. The separation of clitics into their full versions has been omitted.
   2. No attempt is made to identify abbreviations other the ones that are
      hardcoded into the abbr dictionary.
+
+
+NOTES:
+- Punctuation is being removed.
 '''
 import sys
 import os.path
@@ -76,6 +80,35 @@ def tokenizer(sentence):
 
 	return tokenized_sent
 
+def goodTuringSmoothing(table):
+	"""
+	smoothener() Xx
+
+	@params: Xx
+	@return: Xx
+	"""
+	# Loops over the entire table to record the frequencies of bigrams.
+	bigram_frequencies = [0 for i in range(7)]
+	for row in table[1:]:
+		for column in row[1:]:
+			if table[row][column] < 7:
+				bigram_frequencies[table[row][column]] += 1
+
+	good_turing_table = [] # WHAT TO DO???!!! <XX>
+
+	for row in range(1, len(table)):
+		for column in range(1, len(table[row])):
+			count = table[row][column]
+			if count < 5:
+				# WHAT DO YOU DO IT EITHER ARE 0??????!!!!!!! <XX>
+				n_y = bigram_frequencies[count]
+				n_y_1 = bigram_frequencies[count + 1]
+				good_turing_table[row][column] = (count + 1) * (n_y_1 / n_y)
+			else:
+				good_turing_table[row][column] = count
+
+	return good_turing_table
+
 def makeLanguageModel(lines):
 	"""
 	makeLanguageModel() Xx
@@ -106,6 +139,7 @@ def makeLanguageModel(lines):
 					bigram_table[index_first][index_second] += 1
 					if bigram_table[index_first][index_second] > 15:
 						print(bigram_table[index_first])
+						print(bigram_table[0][4])
 
 				# CODE
 
