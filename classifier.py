@@ -100,10 +100,12 @@ def makeLanguageModel(lines):
 				index_second = bigram_table[0].index(word)
 				second = word
 				
+				# Increment the count of the bigram.
 				if first != None:
 					index_first = bigram_table[0].index(first)
 					bigram_table[index_first][index_second] += 1
-
+					if bigram_table[index_first][index_second] > 15:
+						print(bigram_table[index_first])
 
 				# CODE
 
@@ -123,6 +125,21 @@ def makeLanguageModel(lines):
 				bigram_table[0][-1] = word
 				# Adds the new row to the table.
 				bigram_table.append(new_row)
+
+
+				index_second = bigram_table[0].index(word)
+				second = word
+				
+				# Increment the count of the bigram.
+				if first != None:
+					index_first = bigram_table[0].index(first)
+					bigram_table[index_first][index_second] += 1
+					if bigram_table[index_first][index_second] > 15:
+						print(bigram_table[index_first])
+
+				# CODE
+
+				first = second			
 
 	return bigram_table
 
@@ -232,15 +249,16 @@ def main():
 	# else:
 	# 	errorMessage()
 
-	content = urllib.request.urlopen('http://www.cs.carleton.edu/faculty/aexley/authors/austen.txt').read()
+	content = str(urllib.request.urlopen('http://www.cs.carleton.edu/faculty/aexley/authors/austen.txt').read())
 	print(content)
 	content = re.sub('\n{2,}', '. ', content)
 	content = re.sub('\.{2,}', '.', content)
-	content = classifier.tokenizer(content)
+	content = tokenizer(content)
 	cleaned_content = re.sub(' [^A-Za-z0-9.] ', ' ', content)
 	cleaned_content = re.sub('(^ )|( $)', '', cleaned_content)
 	cleaned_content = re.sub(' .$', '', cleaned_content)
 	lines_content = cleaned_content.split(' . ')
+	print('entered')
 	table = makeLanguageModel(lines_content)
 
 	print(table)
