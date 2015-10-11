@@ -1,7 +1,7 @@
-Austen http://www.cs.carleton.edu/faculty/aexley/authors/austen.txt
-Christie http://www.cs.carleton.edu/faculty/aexley/authors/christie.txt
-Dickens http://www.cs.carleton.edu/faculty/aexley/authors/dickens.txt
-Doyle http://www.cs.carleton.edu/faculty/aexley/authors/doyle.txt
-Thoureau http://www.cs.carleton.edu/faculty/aexley/authors/thoureau.txt
-Whitman http://www.cs.carleton.edu/faculty/aexley/authors/whitman.txt
-Wilde http://www.cs.carleton.edu/faculty/aexley/authors/wilde.txt
+Austen,http://www.cs.carleton.edu/faculty/aexley/authors/austen.txt
+Christie,http://www.cs.carleton.edu/faculty/aexley/authors/christie.txt
+Dickens,http://www.cs.carleton.edu/faculty/aexley/authors/dickens.txt
+Doyle,http://www.cs.carleton.edu/faculty/aexley/authors/doyle.txt
+Thoureau,http://www.cs.carleton.edu/faculty/aexley/authors/thoureau.txt
+Whitman,http://www.cs.carleton.edu/faculty/aexley/authors/whitman.txt
+Wilde,http://www.cs.carleton.edu/faculty/aexley/authors/wilde.txt
